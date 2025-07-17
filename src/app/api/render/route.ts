@@ -8,6 +8,19 @@ import os from 'os';
 
 const execAsync = promisify(exec);
 
+// Try to import ffmpeg-static, fallback if not available
+let ffmpegPath: string | undefined;
+let ffprobePath: string | undefined;
+
+try {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  ffmpegPath = require('ffmpeg-static');
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  ffprobePath = require('ffprobe-static').path;
+} catch {
+  console.log('FFmpeg static binaries not available, will use system binaries');
+}
+
 const RenderRequest = z.object({
   title: z.string(),
 });
@@ -17,31 +30,66 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { title } = RenderRequest.parse(body);
 
-    // Use temporary directory (works in Vercel)
+    console.log('Starting video render with title:', title);
+
+    // Create temporary directory for output
     const tempDir = os.tmpdir();
     const outputPath = path.join(tempDir, `video-${Date.now()}.mp4`);
     const inputPropsPath = path.join(tempDir, `props-${Date.now()}.json`);
     
-    // Create input props file in temp directory
-    await fs.writeFile(inputPropsPath, JSON.stringify({ title }));
-
-    // Use Remotion CLI to render the video
-    const command = `npx remotion render src/remotion/index.ts MyComp "${outputPath}" --props="${inputPropsPath}"`;
-    
-    console.log('Executing command:', command);
-    console.log('Temp dir:', tempDir);
     console.log('Output path:', outputPath);
     console.log('Props path:', inputPropsPath);
     
-    const { stdout, stderr } = await execAsync(command, {
-      timeout: 300000, // 5 minutes timeout
+    // Create input props file
+    await fs.writeFile(inputPropsPath, JSON.stringify({ title }));
+
+    // Use Remotion CLI with better configuration for serverless
+    const remotionCommand = [
+      'npx',
+      'remotion',
+      'render',
+      'src/remotion/index.ts',
+      'MyComp',
+      `"${outputPath}"`,
+      `--props="${inputPropsPath}"`,
+      '--image-format=jpeg',
+      '--pixel-format=yuv420p',
+      '--codec=h264',
+      '--overwrite',
+      '--log=info'
+    ].join(' ');
+    
+    console.log('Executing command:', remotionCommand);
+    console.log('Working directory:', process.cwd());
+    
+    // Set environment variables for better compatibility
+    const env = {
+      ...process.env,
+      NODE_ENV: 'production' as const,
+      // Set FFmpeg paths if available
+      ...(ffmpegPath && { FFMPEG_PATH: ffmpegPath }),
+      ...(ffprobePath && { FFPROBE_PATH: ffprobePath }),
+    };
+    
+    const { stdout, stderr } = await execAsync(remotionCommand, {
+      timeout: 280000, // 4.6 minutes (slightly less than Vercel's 5-minute limit)
+      env,
+      cwd: process.cwd(),
     });
     
-    console.log('Remotion output:', stdout);
+    console.log('Remotion stdout:', stdout);
     if (stderr) console.log('Remotion stderr:', stderr);
+
+    // Verify the file exists
+    try {
+      await fs.access(outputPath);
+    } catch {
+      throw new Error('Video file was not created successfully');
+    }
 
     // Read the generated video file
     const videoBuffer = await fs.readFile(outputPath);
+    console.log('Video file read, size:', videoBuffer.length);
 
     // Clean up temporary files
     try {
