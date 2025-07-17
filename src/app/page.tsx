@@ -13,7 +13,7 @@ import {
   VIDEO_WIDTH,
 } from "../types/constants";
 import { z } from "zod";
-import { RenderControls } from "../components/RenderControls";
+import { LocalRenderControls } from "../components/LocalRenderControls";
 import { Tips } from "../components/Tips/Tips";
 import { Spacing } from "../components/Spacing";
 
@@ -61,11 +61,11 @@ const Home: NextPage = () => {
             loop
           />
         </div>
-        <RenderControls
+        <LocalRenderControls
           text={text}
           setText={setText}
           inputProps={inputProps}
-        ></RenderControls>
+        ></LocalRenderControls>
         <Spacing></Spacing>
         <Spacing></Spacing>
         <Spacing></Spacing>
