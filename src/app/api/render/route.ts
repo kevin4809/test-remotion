@@ -4,6 +4,7 @@ import { exec } from 'child_process';
 import { promisify } from 'util';
 import path from 'path';
 import fs from 'fs/promises';
+import os from 'os';
 
 const execAsync = promisify(exec);
 
@@ -16,18 +17,26 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { title } = RenderRequest.parse(body);
 
-    // Create a temporary output path
-    const outputPath = path.join(process.cwd(), 'temp-video.mp4');
+    // Use temporary directory (works in Vercel)
+    const tempDir = os.tmpdir();
+    const outputPath = path.join(tempDir, `video-${Date.now()}.mp4`);
+    const inputPropsPath = path.join(tempDir, `props-${Date.now()}.json`);
     
-    // Create a temporary input props file
-    const inputPropsPath = path.join(process.cwd(), 'temp-props.json');
+    // Create input props file in temp directory
     await fs.writeFile(inputPropsPath, JSON.stringify({ title }));
 
     // Use Remotion CLI to render the video
     const command = `npx remotion render src/remotion/index.ts MyComp "${outputPath}" --props="${inputPropsPath}"`;
     
     console.log('Executing command:', command);
-    const { stdout, stderr } = await execAsync(command);
+    console.log('Temp dir:', tempDir);
+    console.log('Output path:', outputPath);
+    console.log('Props path:', inputPropsPath);
+    
+    const { stdout, stderr } = await execAsync(command, {
+      timeout: 300000, // 5 minutes timeout
+    });
+    
     console.log('Remotion output:', stdout);
     if (stderr) console.log('Remotion stderr:', stderr);
 
@@ -35,8 +44,12 @@ export async function POST(request: NextRequest) {
     const videoBuffer = await fs.readFile(outputPath);
 
     // Clean up temporary files
-    await fs.unlink(outputPath);
-    await fs.unlink(inputPropsPath);
+    try {
+      await fs.unlink(outputPath);
+      await fs.unlink(inputPropsPath);
+    } catch (cleanupError) {
+      console.warn('Cleanup error:', cleanupError);
+    }
 
     // Return the video as a downloadable file
     return new NextResponse(videoBuffer, {
