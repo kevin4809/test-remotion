@@ -6,60 +6,46 @@ import {
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
-import { NextLogo } from "./NextLogo";
 import { loadFont, fontFamily } from "@remotion/google-fonts/Inter";
 import React, { useMemo } from "react";
-import { Rings } from "./Rings";
-import { TextFade } from "./TextFade";
+import { IDCard } from "./IDCard";
 import { CompositionProps } from "../../types/constants";
 
 loadFont("normal", {
   subsets: ["latin"],
-  weights: ["400", "700"],
+  weights: ["400", "500", "600", "700"],
 });
 
 const container: React.CSSProperties = {
-  backgroundColor: "white",
+  background: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
 };
 
-const logo: React.CSSProperties = {
-  justifyContent: "center",
-  alignItems: "center",
-};
-
-export const Main = ({ title }: z.infer<typeof CompositionProps>) => {
+export const Main = ({ name, position, department, employeeId, photoUrl }: z.infer<typeof CompositionProps>) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  const transitionStart = 2 * fps;
-  const transitionDuration = 1 * fps;
-
-  const logoOut = spring({
+  // Animación principal de entrada
+  const mainProgress = spring({
     fps,
     frame,
     config: {
       damping: 200,
+      stiffness: 100,
     },
-    durationInFrames: transitionDuration,
-    delay: transitionStart,
+    durationInFrames: 60,
   });
-
-  const titleStyle: React.CSSProperties = useMemo(() => {
-    return { fontFamily, fontSize: 70 };
-  }, []);
 
   return (
     <AbsoluteFill style={container}>
-      <Sequence durationInFrames={transitionStart + transitionDuration}>
-        <Rings outProgress={logoOut}></Rings>
-        <AbsoluteFill style={logo}>
-          <NextLogo outProgress={logoOut}></NextLogo>
-        </AbsoluteFill>
-      </Sequence>
-      <Sequence from={transitionStart + transitionDuration / 2}>
-        <TextFade>
-          <h1 style={titleStyle}>{title}</h1>
-        </TextFade>
+      <Sequence from={0}>
+        <IDCard
+          name={name}
+          position={position}
+          department={department}
+          employeeId={employeeId}
+          photoUrl={photoUrl}
+          progress={mainProgress}
+        />
       </Sequence>
     </AbsoluteFill>
   );

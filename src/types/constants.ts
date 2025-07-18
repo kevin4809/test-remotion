@@ -2,11 +2,19 @@ import { z } from "zod";
 export const COMP_NAME = "MyComp";
 
 export const CompositionProps = z.object({
-  title: z.string(),
+  name: z.string(),
+  position: z.string(),
+  department: z.string(),
+  employeeId: z.string(),
+  photoUrl: z.string().optional(),
 });
 
 export const defaultMyCompProps: z.infer<typeof CompositionProps> = {
-  title: "Next.js and Remotion",
+  name: "Kevin",
+  position: "Un desarrollador muy feliz ",
+  department: "Tenologiaaaa",
+  employeeId: "No c que colocar k funcione por favo",
+  photoUrl: "",
 };
 
 export const DURATION_IN_FRAMES = 200;
