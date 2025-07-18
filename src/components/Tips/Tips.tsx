@@ -47,7 +47,7 @@ const Tip: React.FC<{
 export const Tips: React.FC = () => {
   return (
     <div className={styles.row}>
-      <Tip
+      {/* <Tip
         href="https://www.remotion.dev/docs/the-fundamentals"
         title="Learn Remotion"
         description="Learn how to customize this video written in React."
@@ -61,7 +61,7 @@ export const Tips: React.FC = () => {
         href="https://remotion.dev/discord"
         title="Join the community"
         description="Chat with others builders on Discord."
-      ></Tip>
+      ></Tip> */}
     </div>
   );
 };

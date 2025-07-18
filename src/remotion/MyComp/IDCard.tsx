@@ -20,7 +20,7 @@ interface IDCardProps {
   department: string;
   employeeId: string;
   photoUrl?: string;
-  progress: number;
+  progress?: number;
 }
 
 export const IDCard: React.FC<IDCardProps> = ({
@@ -29,7 +29,6 @@ export const IDCard: React.FC<IDCardProps> = ({
   department,
   employeeId,
   photoUrl,
-  progress,
 }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();

@@ -6,8 +6,8 @@ import {
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
-import { loadFont, fontFamily } from "@remotion/google-fonts/Inter";
-import React, { useMemo } from "react";
+import { loadFont } from "@remotion/google-fonts/Inter";
+import React from "react";
 import { IDCard } from "./IDCard";
 import { CompositionProps } from "../../types/constants";
 
