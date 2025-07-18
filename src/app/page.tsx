@@ -13,7 +13,7 @@ import {
   VIDEO_WIDTH,
 } from "../types/constants";
 import { z } from "zod";
-import { LocalRenderControls } from "../components/LocalRenderControls";
+import { RenderControls } from "../components/RenderControls";
 import { Tips } from "../components/Tips/Tips";
 import { Spacing } from "../components/Spacing";
 
@@ -22,8 +22,6 @@ const container: React.CSSProperties = {
   margin: "auto",
   marginBottom: 20,
 };
-
-//hola
 
 const outer: React.CSSProperties = {
   borderRadius: "var(--geist-border-radius)",
@@ -63,11 +61,11 @@ const Home: NextPage = () => {
             loop
           />
         </div>
-        <LocalRenderControls
+        <RenderControls
           text={text}
           setText={setText}
           inputProps={inputProps}
-        ></LocalRenderControls>
+        ></RenderControls>
         <Spacing></Spacing>
         <Spacing></Spacing>
         <Spacing></Spacing>

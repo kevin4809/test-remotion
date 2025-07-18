@@ -1,9 +1,4 @@
 {
-  "functions": {
-    "src/app/api/render/route.ts": {
-      "maxDuration": 300
-    }
-  },
-  "buildCommand": "npm run build"
-}
+    "buildCommand": "node deploy.mjs && next build"
+  }
   

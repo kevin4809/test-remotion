@@ -6,6 +6,3 @@
 import { Config } from "@remotion/cli/config";
 
 Config.setVideoImageFormat("jpeg");
-Config.setImageSequence(false);
-Config.setPixelFormat("yuv420p");
-Config.setCodec("h264");
