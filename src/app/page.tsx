@@ -2,7 +2,7 @@
 
 import { Player } from "@remotion/player";
 import type { NextPage } from "next";
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import { Main } from "../remotion/MyComp/Main";
 import {
   CompositionProps,

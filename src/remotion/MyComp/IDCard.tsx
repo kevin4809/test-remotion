@@ -58,7 +58,6 @@ export const IDCard: React.FC<IDCardProps> = ({
   const cardContainer: React.CSSProperties = {
     justifyContent: "center",
     alignItems: "center",
-    perspective: "1000px",
   };
 
   const cardStyle: React.CSSProperties = {

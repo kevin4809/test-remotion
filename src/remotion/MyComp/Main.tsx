@@ -37,7 +37,7 @@ export const Main = ({ name, position, department, employeeId, photoUrl }: z.inf
 
   return (
     <AbsoluteFill style={container}>
-      <Sequence from={0}>
+      <Sequence>
         <IDCard
           name={name}
           position={position}
