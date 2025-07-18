@@ -57,7 +57,7 @@ export const RenderControls: React.FC<{
       state.status === "error" ? (
         <>
           <div>
-            <label style={labelStyle}>Nombre completo</label>
+            <label style={labelStyle}></label>
             <Input
               disabled={state.status === "invoking"}
               setText={updateName}
@@ -66,7 +66,7 @@ export const RenderControls: React.FC<{
           </div>
           <Spacing />
           <div>
-            <label style={labelStyle}>Cargo/Posición</label>
+            <label style={labelStyle}></label>
             <Input
               disabled={state.status === "invoking"}
               setText={updatePosition}
@@ -75,7 +75,7 @@ export const RenderControls: React.FC<{
           </div>
           <Spacing />
           <div>
-            <label style={labelStyle}>Departamento</label>
+            <label style={labelStyle}></label>
             <Input
               disabled={state.status === "invoking"}
               setText={updateDepartment}
@@ -84,7 +84,7 @@ export const RenderControls: React.FC<{
           </div>
           <Spacing />
           <div>
-            <label style={labelStyle}>ID de empleado</label>
+            <label style={labelStyle}></label>
             <Input
               disabled={state.status === "invoking"}
               setText={updateEmployeeId}
@@ -93,7 +93,7 @@ export const RenderControls: React.FC<{
           </div>
           <Spacing />
           <div>
-            <label style={labelStyle}>URL de la foto (opcional)</label>
+            <label style={labelStyle}>URL de la foto </label>
             <Input
               disabled={state.status === "invoking"}
               setText={updatePhotoUrl}
