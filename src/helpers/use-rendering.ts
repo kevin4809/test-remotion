@@ -2,6 +2,7 @@ import { z } from "zod";
 import { useCallback, useMemo, useState } from "react";
 import { getProgress, renderVideo } from "../lambda/api";
 import { CompositionProps } from "../types/constants";
+import { generateVideoId, storeVideo } from "./video-storage";
 
 export type State =
   | {
@@ -24,6 +25,7 @@ export type State =
   | {
       url: string;
       size: number;
+      videoId: string;
       status: "done";
     };
 
@@ -74,9 +76,24 @@ export const useRendering = (
             break;
           }
           case "done": {
+            // Generar ID único para el video
+            const videoId = generateVideoId();
+            
+            // Almacenar información del video para compartir
+            const videoData = {
+              url: result.url,
+              size: result.size,
+              title: `Tarjeta ID - ${inputProps.name}`,
+              createdAt: new Date().toISOString(),
+            };
+            
+            // Guardar usando el helper
+            storeVideo(videoId, videoData);
+            
             setState({
               size: result.size,
               url: result.url,
+              videoId: videoId,
               status: "done",
             });
             pending = false;

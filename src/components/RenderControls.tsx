@@ -5,6 +5,7 @@ import { AlignEnd } from "./AlignEnd";
 import { Button } from "./Button/Button";
 import { InputContainer } from "./Container";
 import { DownloadButton } from "./DownloadButton";
+import { ShareButton } from "./ShareButton";
 import { ErrorComp } from "./Error";
 import { Input } from "./Input";
 import { ProgressBar } from "./ProgressBar";
@@ -122,6 +123,8 @@ export const RenderControls: React.FC<{
           />
           <Spacing></Spacing>
           <AlignEnd>
+            <ShareButton state={state}></ShareButton>
+            <Spacing></Spacing>
             <DownloadButton undo={undo} state={state}></DownloadButton>
           </AlignEnd>
         </>
