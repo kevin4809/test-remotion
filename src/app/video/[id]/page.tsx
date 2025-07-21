@@ -67,7 +67,7 @@ const loading: React.CSSProperties = {
   color: "var(--accents-6)",
 };
 
-const error: React.CSSProperties = {
+const errorStyle: React.CSSProperties = {
   textAlign: "center",
   padding: "60px 20px",
   color: "var(--error)",
@@ -108,7 +108,7 @@ export default function VideoPage() {
   if (error || !videoData) {
     return (
       <div style={container}>
-        <div style={error}>
+        <div style={errorStyle}>
           {error || 'Video no encontrado'}
         </div>
       </div>

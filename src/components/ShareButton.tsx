@@ -3,10 +3,6 @@ import { State } from "../helpers/use-rendering";
 import { Button } from "./Button/Button";
 import { Spacing } from "./Spacing";
 
-const light: React.CSSProperties = {
-  opacity: 0.6,
-};
-
 const dropdown: React.CSSProperties = {
   position: "relative",
   display: "inline-block",
@@ -38,10 +34,6 @@ const shareLink: React.CSSProperties = {
   display: "block",
   fontSize: "14px",
   transition: "background-color 0.2s",
-};
-
-const shareLinkHover: React.CSSProperties = {
-  backgroundColor: "var(--accents-2)",
 };
 
 const shareIcon: React.CSSProperties = {
