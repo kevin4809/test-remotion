@@ -2,6 +2,7 @@
 
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import Head from 'next/head';
 import { Spacing } from '../../../components/Spacing';
 import { getVideo, VideoData } from '../../../helpers/video-storage';
 
@@ -136,6 +137,17 @@ export default function VideoPage() {
 
   return (
     <div style={container}>
+             <Head>
+         <title>{videoData.title || 'Tarjeta de Identificación'} - Mi App</title>
+         <meta property="og:title" content={videoData.title || 'Tarjeta de Identificación'} />
+         <meta property="og:description" content="Video creado con nuestra aplicación" />
+         <meta property="og:url" content={`${window.location.origin}/video/${videoId}`} />
+         <meta property="og:type" content="video.other" />
+         <meta property="og:video" content={videoData.url} />
+         <meta property="og:video:type" content="video/mp4" />
+         <meta property="og:video:width" content="640" />
+         <meta property="og:video:height" content="360" />
+       </Head>
       <h1 style={title}>
         {videoData.title || 'Tarjeta de Identificación'}
       </h1>
